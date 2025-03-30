@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:weather_app/AdditionInfoItem.dart';
 import 'package:weather_app/HourlyWeatherForecastItem.dart';
 import 'package:http/http.dart' as http;
-import 'package:weather_app/secrets.dart';
+import 'package:weather_app/secrets1.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
