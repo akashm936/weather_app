@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:weather_app/AdditionInfoItem.dart';
 import 'package:weather_app/HourlyWeatherForecastItem.dart';
 import 'package:http/http.dart' as http;
-import 'package:weather_app/secrets1.dart';
+import 'package:weather_app/secrets.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -91,6 +91,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
           final currentWindSpeed = currentWeatherdata['wind']['speed'];
           final currentHumidity = currentWeatherdata['main']['humidity'];
 
+          var tempCel = currentTemp - 273.15;
+
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -115,7 +117,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           child: Column(
                             children: [
                               Text(
-                                "$currentTemp ° K",
+                                "${tempCel.toStringAsFixed(1)} ° C",
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -185,9 +187,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       final hourlyTemp =
                           hourlyForecast['main']['temp'].toString();
                       final time = DateTime.parse(hourlyForecast['dt_txt']);
+                      final hourlyTempCel = hourlyTemp-272.15;
                       return HourlyWeatherForecastItem(
                         time: DateFormat.Hm().format(time),
-                        temperature: hourlyTemp,
+                        temperature: hourlyTempCel.toStringAsFixed(1),
                         icon:
                             hourlySky == "Clouds" || hourlySky == "Rain"
                                 ? Icons.cloud
