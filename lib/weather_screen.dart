@@ -17,8 +17,10 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   late Future<Map<String, dynamic>> weather;
+
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
+      // String cityName = "";
       String cityName = "Jalna";
       final res = await http.get(
         Uri.parse(
@@ -43,6 +45,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   void initState() {
     super.initState();
     weather = getCurrentWeather();
+
   }
 
   @override
@@ -98,6 +101,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 //  Main Card
                 SizedBox(
                   width: double.infinity,
@@ -109,7 +113,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                         child: Padding(
@@ -151,46 +154,22 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child: Row(
-                //     children: [
-                //       //  add card here
-                //       for (int i = 0; i <= 5; i++)
-                //         HourlyWeatherForecastItem(
-                //           time: data['list'][i + 1]['dt_txt'].toString(),
-                //           icon:
-                //               data['list'][i + 1]['weather'][0]['main'] ==
-                //                           "Clouds" ||
-                //                       data['list'][i +
-                //                               1]['weather'][0]['main'] ==
-                //                           "Rain"
-                //                   ? Icons.cloud
-                //                   : Icons.sunny,
-                //           temperature:
-                //               data['list'][i + 1]['main']['temp'].toString(),
-                //         ),
-                //     ],
-                //   ),
-                // ),
-
                 // Lazy Loading
                 SizedBox(
                   height: 120,
                   child: ListView.builder(
-                    itemCount: 12,
+                    itemCount: 8,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       final hourlyForecast = data['list'][index + 1];
                       final hourlySky =
                           data['list'][index + 1]['weather'][0]['main'];
-                      final hourlyTemp =
-                          hourlyForecast['main']['temp'].toString();
+                      final hourlyTemp = hourlyForecast['main']['temp'];
                       final time = DateTime.parse(hourlyForecast['dt_txt']);
-                      final hourlyTempCel = hourlyTemp-272.15;
+                      final hourlyTempCel = hourlyTemp - 272.15;
                       return HourlyWeatherForecastItem(
                         time: DateFormat.Hm().format(time),
-                        temperature: hourlyTempCel.toStringAsFixed(1),
+                        temperature: '${hourlyTempCel.toStringAsFixed(0)} ° C',
                         icon:
                             hourlySky == "Clouds" || hourlySky == "Rain"
                                 ? Icons.cloud
@@ -236,3 +215,26 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 }
+
+// SingleChildScrollView(
+//   scrollDirection: Axis.horizontal,
+//   child: Row(
+//     children: [
+//       //  add card here
+//       for (int i = 0; i <= 5; i++)
+//         HourlyWeatherForecastItem(
+//           time: data['list'][i + 1]['dt_txt'].toString(),
+//           icon:
+//               data['list'][i + 1]['weather'][0]['main'] ==
+//                           "Clouds" ||
+//                       data['list'][i +
+//                               1]['weather'][0]['main'] ==
+//                           "Rain"
+//                   ? Icons.cloud
+//                   : Icons.sunny,
+//           temperature:
+//               data['list'][i + 1]['main']['temp'].toString(),
+//         ),
+//     ],
+//   ),
+// ),
